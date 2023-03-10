@@ -1,0 +1,102 @@
+{
+    "sourceFile": "pages/index.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 21,
+            "patches": [
+                {
+                    "date": 1676037455345,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1676281208854,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,12 @@\n function HomePage(){\n   return(\n      <div>\n-      <h1>The Home Page</h1>\n+      <h1>The Home Page</h1>  \n+      <form>\n+        <label htmlFor=\"email\">Enter your e-mail address:</label>\n+        <input type=\"email\" />\n+      </form>\n      </div>\n   )\n }\n \n"
+                },
+                {
+                    "date": 1676281445582,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,13 +1,21 @@\n-function HomePage(){\n-  return(\n-     <div>\n-      <h1>The Home Page</h1>  \n+function HomePage() {\n+  return (\n+    <div>\n+      <h1>The Home Page</h1>\n       <form>\n-        <label htmlFor=\"email\">Enter your e-mail address:</label>\n-        <input type=\"email\" />\n+        <div>\n+          <label htmlFor=\"email\">Your e-mail address:</label> \n+          {/* htmlFor connecting with input's id */}\n+          <input type=\"email\" id=\"email\" />\n+        </div>\n+        <div>\n+          <label htmlFor=\"feedback\">Your feedback:</label>\n+          <textarea id=\"feedback\" rows=\"5\"></textarea>\n+        </div>\n+        <button>Send feedback</button>\n       </form>\n-     </div>\n+    </div>\n   )\n }\n \n export default HomePage;\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1676284833401,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,6 @@\n+import { useRef } from \"react\";\n+\n function HomePage() {\n   return (\n     <div>\n       <h1>The Home Page</h1>\n"
+                },
+                {
+                    "date": 1676285092100,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,19 +1,22 @@\n import { useRef } from \"react\";\n \n function HomePage() {\n+\n+  const emailInputRef = useRef();\n+  const feedbackInputRef = useRef();\n+\n   return (\n     <div>\n       <h1>The Home Page</h1>\n       <form>\n         <div>\n-          <label htmlFor=\"email\">Your e-mail address:</label> \n-          {/* htmlFor connecting with input's id */}\n-          <input type=\"email\" id=\"email\" />\n+          <label htmlFor=\"email\">Your e-mail address:</label>\n+          <input type=\"email\" id=\"email\" ref={emailInputRef}/>\n         </div>\n         <div>\n           <label htmlFor=\"feedback\">Your feedback:</label>\n-          <textarea id=\"feedback\" rows=\"5\"></textarea>\n+          <textarea id=\"feedback\" rows=\"5\" ref={feedbackInputRef}></textarea>\n         </div>\n         <button>Send feedback</button>\n       </form>\n     </div>\n"
+                },
+                {
+                    "date": 1676285929184,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,12 +4,16 @@\n \n   const emailInputRef = useRef();\n   const feedbackInputRef = useRef();\n \n+  function submitFormHandler(event){\n+\n+  }\n+\n   return (\n     <div>\n       <h1>The Home Page</h1>\n-      <form>\n+      <form onSubmit={submitFormHandler}>\n         <div>\n           <label htmlFor=\"email\">Your e-mail address:</label>\n           <input type=\"email\" id=\"email\" ref={emailInputRef}/>\n         </div>\n"
+                },
+                {
+                    "date": 1676286493661,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,19 +4,23 @@\n \n   const emailInputRef = useRef();\n   const feedbackInputRef = useRef();\n \n-  function submitFormHandler(event){\n+  function submitFormHandler(event) {\n+    event.preventDefault(); // to prevent page reload, which is the browser default\n \n+    const enteredEmail = emailInputRef.current.value;\n+    const enteredFeedback = feedbackInputRef.current.value;\n+\n   }\n \n   return (\n     <div>\n       <h1>The Home Page</h1>\n       <form onSubmit={submitFormHandler}>\n         <div>\n           <label htmlFor=\"email\">Your e-mail address:</label>\n-          <input type=\"email\" id=\"email\" ref={emailInputRef}/>\n+          <input type=\"email\" id=\"email\" ref={emailInputRef} />\n         </div>\n         <div>\n           <label htmlFor=\"feedback\">Your feedback:</label>\n           <textarea id=\"feedback\" rows=\"5\" ref={feedbackInputRef}></textarea>\n"
+                },
+                {
+                    "date": 1676286538300,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,8 +10,9 @@\n \n     const enteredEmail = emailInputRef.current.value;\n     const enteredFeedback = feedbackInputRef.current.value;\n \n+    //validation process....\n   }\n \n   return (\n     <div>\n"
+                },
+                {
+                    "date": 1676361573215,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,35 @@\n+import { useRef } from \"react\";\n+\n+function HomePage() {\n+\n+  const emailInputRef = useRef();\n+  const feedbackInputRef = useRef();\n+\n+  function submitFormHandler(event) {\n+    event.preventDefault(); // to prevent page reload, which is the browser default\n+\n+    const enteredEmail = emailInputRef.current.value;\n+    const enteredFeedback = feedbackInputRef.current.value;\n+\n+    fetch(); // {email: 'test@test.com', text: 'some feedback text'}\n+  }\n+  console.log(process.cwd());\n+  return (\n+    <div>\n+      <h1>The Home Page</h1>\n+      <form onSubmit={submitFormHandler}>\n+        <div>\n+          <label htmlFor=\"email\">Your e-mail address:</label>\n+          <input type=\"email\" id=\"email\" ref={emailInputRef} />\n+        </div>\n+        <div>\n+          <label htmlFor=\"feedback\">Your feedback:</label>\n+          <textarea id=\"feedback\" rows=\"5\" ref={feedbackInputRef}></textarea>\n+        </div>\n+        <button>Send feedback</button>\n+      </form>\n+    </div>\n+  )\n+}\n+\n+export default HomePage;\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1676366951205,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,8 @@\n     const enteredFeedback = feedbackInputRef.current.value;\n \n     fetch(); // {email: 'test@test.com', text: 'some feedback text'}\n   }\n-  console.log(process.cwd());\n   return (\n     <div>\n       <h1>The Home Page</h1>\n       <form onSubmit={submitFormHandler}>\n@@ -31,40 +30,5 @@\n     </div>\n   )\n }\n \n-export default HomePage;\n-import { useRef } from \"react\";\n-\n-function HomePage() {\n-\n-  const emailInputRef = useRef();\n-  const feedbackInputRef = useRef();\n-\n-  function submitFormHandler(event) {\n-    event.preventDefault(); // to prevent page reload, which is the browser default\n-\n-    const enteredEmail = emailInputRef.current.value;\n-    const enteredFeedback = feedbackInputRef.current.value;\n-\n-    //validation process....\n-  }\n-\n-  return (\n-    <div>\n-      <h1>The Home Page</h1>\n-      <form onSubmit={submitFormHandler}>\n-        <div>\n-          <label htmlFor=\"email\">Your e-mail address:</label>\n-          <input type=\"email\" id=\"email\" ref={emailInputRef} />\n-        </div>\n-        <div>\n-          <label htmlFor=\"feedback\">Your feedback:</label>\n-          <textarea id=\"feedback\" rows=\"5\" ref={feedbackInputRef}></textarea>\n-        </div>\n-        <button>Send feedback</button>\n-      </form>\n-    </div>\n-  )\n-}\n-\n export default HomePage;\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1676368599221,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,8 +12,9 @@\n     const enteredFeedback = feedbackInputRef.current.value;\n \n     fetch(); // {email: 'test@test.com', text: 'some feedback text'}\n   }\n+  console.log(process.cwd());\n   return (\n     <div>\n       <h1>The Home Page</h1>\n       <form onSubmit={submitFormHandler}>\n"
+                },
+                {
+                    "date": 1676370316800,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,11 +10,18 @@\n \n     const enteredEmail = emailInputRef.current.value;\n     const enteredFeedback = feedbackInputRef.current.value;\n \n-    fetch(); // {email: 'test@test.com', text: 'some feedback text'}\n+    const reqBody = { email: enteredEmail, text: enteredFeedback }\n+\n+    fetch('/api/feedback', {\n+      method: 'POST',\n+      body: JSON.stringify(reqBody),\n+      headers: {\n+        'Content-Type': 'appliction/json'\n+      }\n+    }); // {email: 'test@test.com', text: 'some feedback text'}\n   }\n-  console.log(process.cwd());\n   return (\n     <div>\n       <h1>The Home Page</h1>\n       <form onSubmit={submitFormHandler}>\n"
+                },
+                {
+                    "date": 1676373302547,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,5 @@\n+import { response } from \"express\";\n import { useRef } from \"react\";\n \n function HomePage() {\n \n@@ -18,9 +19,11 @@\n       body: JSON.stringify(reqBody),\n       headers: {\n         'Content-Type': 'appliction/json'\n       }\n-    }); // {email: 'test@test.com', text: 'some feedback text'}\n+    })\n+      .then((response) => response.json())\n+      .then((data) => console.log(data))\n   }\n   return (\n     <div>\n       <h1>The Home Page</h1>\n"
+                },
+                {
+                    "date": 1676378182055,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-import { response } from \"express\";\n+// import { response } from \"express\";\n import { useRef } from \"react\";\n \n function HomePage() {\n \n"
+                },
+                {
+                    "date": 1676378204036,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,4 @@\n-// import { response } from \"express\";\n import { useRef } from \"react\";\n \n function HomePage() {\n \n"
+                },
+                {
+                    "date": 1676379075665,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,9 +16,9 @@\n     fetch('/api/feedback', {\n       method: 'POST',\n       body: JSON.stringify(reqBody),\n       headers: {\n-        'Content-Type': 'appliction/json'\n+        'Content-Type': 'application/json'\n       }\n     })\n       .then((response) => response.json())\n       .then((data) => console.log(data))\n"
+                },
+                {
+                    "date": 1676453398867,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,9 +20,9 @@\n         'Content-Type': 'application/json'\n       }\n     })\n       .then((response) => response.json())\n-      .then((data) => console.log(data))\n+      // .then((data) => console.log(data))\n   }\n   return (\n     <div>\n       <h1>The Home Page</h1>\n"
+                },
+                {
+                    "date": 1676453434146,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,9 +20,9 @@\n         'Content-Type': 'application/json'\n       }\n     })\n       .then((response) => response.json())\n-      // .then((data) => console.log(data))\n+      .then((data) => console.log(data))\n   }\n   return (\n     <div>\n       <h1>The Home Page</h1>\n"
+                },
+                {
+                    "date": 1676456788609,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,8 +22,21 @@\n     })\n       .then((response) => response.json())\n       .then((data) => console.log(data))\n   }\n+\n+  function loadFeedbackHandler() {\n+    fetch('/api/feedback', {\n+      method: 'POST',\n+      body: JSON.stringify(reqBody),\n+      headers: {\n+        'Content-Type': 'application/json'\n+      }\n+    })\n+      .then((response) => response.json())\n+      .then((data) => console.log(data))\n+  }\n+\n   return (\n     <div>\n       <h1>The Home Page</h1>\n       <form onSubmit={submitFormHandler}>\n@@ -34,10 +47,12 @@\n         <div>\n           <label htmlFor=\"feedback\">Your feedback:</label>\n           <textarea id=\"feedback\" rows=\"5\" ref={feedbackInputRef}></textarea>\n         </div>\n-        <button>Send feedback</button>\n+        <button>Send Feedback</button>\n       </form>\n+      <hr/>\n+      <button>Load Feedback</button>\n     </div>\n   )\n }\n \n"
+                },
+                {
+                    "date": 1676456831796,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,15 +24,9 @@\n       .then((data) => console.log(data))\n   }\n \n   function loadFeedbackHandler() {\n-    fetch('/api/feedback', {\n-      method: 'POST',\n-      body: JSON.stringify(reqBody),\n-      headers: {\n-        'Content-Type': 'application/json'\n-      }\n-    })\n+    fetch('/api/feedback')\n       .then((response) => response.json())\n       .then((data) => console.log(data))\n   }\n \n@@ -50,9 +44,9 @@\n         </div>\n         <button>Send Feedback</button>\n       </form>\n       <hr/>\n-      <button>Load Feedback</button>\n+      <button onClick={loadFeedbackHandler}>Load Feedback</button>\n     </div>\n   )\n }\n \n"
+                },
+                {
+                    "date": 1676458393488,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,10 @@\n-import { useRef } from \"react\";\n+import { useRef, useState } from \"react\";\n \n function HomePage() {\n \n+  const [feedbackItems, setFeedbackItems] = useState([]);\n+\n   const emailInputRef = useRef();\n   const feedbackInputRef = useRef();\n \n   function submitFormHandler(event) {\n@@ -26,9 +28,11 @@\n \n   function loadFeedbackHandler() {\n     fetch('/api/feedback')\n       .then((response) => response.json())\n-      .then((data) => console.log(data))\n+      .then((data) => {\n+        setFeedbackItems(data.feedback)\n+      })\n   }\n \n   return (\n     <div>\n@@ -43,9 +47,9 @@\n           <textarea id=\"feedback\" rows=\"5\" ref={feedbackInputRef}></textarea>\n         </div>\n         <button>Send Feedback</button>\n       </form>\n-      <hr/>\n+      <hr />\n       <button onClick={loadFeedbackHandler}>Load Feedback</button>\n     </div>\n   )\n }\n"
+                },
+                {
+                    "date": 1676458818938,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -29,9 +29,9 @@\n   function loadFeedbackHandler() {\n     fetch('/api/feedback')\n       .then((response) => response.json())\n       .then((data) => {\n-        setFeedbackItems(data.feedback)\n+        setFeedbackItems(data.feedback) // to feedback: data line (feedback.js file)\n       })\n   }\n \n   return (\n@@ -49,8 +49,11 @@\n         <button>Send Feedback</button>\n       </form>\n       <hr />\n       <button onClick={loadFeedbackHandler}>Load Feedback</button>\n+      <ul>\n+        {feedbackItems.map((item) => <li key={item.id}>{item.text}</li>)}\n+      </ul>\n     </div>\n   )\n }\n \n"
+                }
+            ],
+            "date": 1676037455345,
+            "name": "Commit-0",
+            "content": "function HomePage(){\n  return(\n     <div>\n      <h1>The Home Page</h1>\n     </div>\n  )\n}\n\nexport default HomePage;"
+        }
+    ]
+}

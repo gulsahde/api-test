@@ -1,0 +1,58 @@
+{
+    "sourceFile": "pages/feedback/index.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 10,
+            "patches": [
+                {
+                    "date": 1676537547391,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1677840273333,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,18 @@\n+import { buildFeedbackPath, extractFeedback } from \"../api/feedback\";\r\n+function FeedbackPage(props) { //client-side code\r\n+    return (\r\n+        <ul>\r\n+            {props.feedbackItems.map((item) => (\r\n+                <li key={item.id}>{item.text}</li>\r\n+            ))}\r\n+        </ul>\r\n+    )\r\n+}\r\n+\r\n+export async function getStaticProps() { //server-side code\r\n+    const filePath=buildFeedbackPath();\r\n+    const data=extractFeedback(),\r\n+\r\n+}\r\n+\r\n+export default FeedbackPage;\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1677840284689,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,19 +9,10 @@\n     )\r\n }\r\n \r\n export async function getStaticProps() { //server-side code\r\n-    const filePath=buildFeedbackPath();\r\n-    const data=extractFeedback(),\r\n+    const filePath = buildFeedbackPath();\r\n+    const data = extractFeedback(filePath);\r\n \r\n }\r\n \r\n-export default FeedbackPage;\n-function FeedbackPage(){\r\n-    return(\r\n-        <div>\r\n-            Feedback Page!\r\n-        </div>\r\n-    )\r\n-}\r\n-\r\n export default FeedbackPage;\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1677840779719,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,8 +11,13 @@\n \r\n export async function getStaticProps() { //server-side code\r\n     const filePath = buildFeedbackPath();\r\n     const data = extractFeedback(filePath);\r\n+    return{\r\n+        props: {\r\n+            feedbackItems: data,\r\n+        }\r\n+    }\r\n \r\n }\r\n \r\n export default FeedbackPage;\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1678443393896,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,19 +1,36 @@\n import { buildFeedbackPath, extractFeedback } from \"../api/feedback\";\r\n+import { Fragment, useState } from 'react';\r\n+\r\n function FeedbackPage(props) { //client-side code\r\n+\r\n+    const [feedbackData, setFeedbackData] = useState();\r\n+\r\n+    function loadFeedbackHandler(id) {\r\n+        fetch(`/api/${id}`)\r\n+            .then(response => response.json())\r\n+            .then(data => {\r\n+                setFeedbackData(data.feedback);\r\n+            }); ///api/some-feedback-id\r\n+    }\r\n     return (\r\n-        <ul>\r\n-            {props.feedbackItems.map((item) => (\r\n-                <li key={item.id}>{item.text}</li>\r\n-            ))}\r\n-        </ul>\r\n+        <Fragment>\r\n+            {feedbackData && <p>{feedbackData.email}</p>}\r\n+            <ul>\r\n+                {props.feedbackItems.map((item) => (\r\n+                    <li key={item.id}>{item.text}\r\n+                        <button onClick={loadFeedbackHandler.bind(null, item.id)}>Show Details</button>\r\n+                    </li>\r\n+                ))}\r\n+            </ul>\r\n+        </Fragment>\r\n     )\r\n }\r\n \r\n export async function getStaticProps() { //server-side code\r\n     const filePath = buildFeedbackPath();\r\n     const data = extractFeedback(filePath);\r\n-    return{\r\n+    return {\r\n         props: {\r\n             feedbackItems: data,\r\n         }\r\n     }\r\n"
+                },
+                {
+                    "date": 1678443712752,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,9 +6,9 @@\n     const [feedbackData, setFeedbackData] = useState();\r\n \r\n     function loadFeedbackHandler(id) {\r\n         fetch(`/api/${id}`)\r\n-            .then(response => response.json())\r\n+            .then((response) => response.json())\r\n             .then(data => {\r\n                 setFeedbackData(data.feedback);\r\n             }); ///api/some-feedback-id\r\n     }\r\n"
+                },
+                {
+                    "date": 1678443739039,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,9 +7,9 @@\n \r\n     function loadFeedbackHandler(id) {\r\n         fetch(`/api/${id}`)\r\n             .then((response) => response.json())\r\n-            .then(data => {\r\n+            .then((data) => {\r\n                 setFeedbackData(data.feedback);\r\n             }); ///api/some-feedback-id\r\n     }\r\n     return (\r\n"
+                },
+                {
+                    "date": 1678445545058,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-import { buildFeedbackPath, extractFeedback } from \"../api/feedback\";\r\n+import { buildFeedbackPath, extractFeedback } from \"../api/feedback/feedback\";\r\n import { Fragment, useState } from 'react';\r\n \r\n function FeedbackPage(props) { //client-side code\r\n \r\n"
+                },
+                {
+                    "date": 1678445552965,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-import { buildFeedbackPath, extractFeedback } from \"../api/feedback/feedback\";\r\n+import { buildFeedbackPath, extractFeedback } from \"../api/feedback\";\r\n import { Fragment, useState } from 'react';\r\n \r\n function FeedbackPage(props) { //client-side code\r\n \r\n"
+                },
+                {
+                    "date": 1678446429828,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n \r\n     const [feedbackData, setFeedbackData] = useState();\r\n \r\n     function loadFeedbackHandler(id) {\r\n-        fetch(`/api/${id}`)\r\n+        fetch(`/api/feedback/${id}`)\r\n             .then((response) => response.json())\r\n             .then((data) => {\r\n                 setFeedbackData(data.feedback);\r\n             }); ///api/some-feedback-id\r\n"
+                },
+                {
+                    "date": 1678446485748,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,17 +1,17 @@\n import { buildFeedbackPath, extractFeedback } from \"../api/feedback\";\r\n import { Fragment, useState } from 'react';\r\n \r\n-function FeedbackPage(props) { //client-side code\r\n+function FeedbackPage(props) { \r\n \r\n     const [feedbackData, setFeedbackData] = useState();\r\n \r\n     function loadFeedbackHandler(id) {\r\n         fetch(`/api/feedback/${id}`)\r\n             .then((response) => response.json())\r\n             .then((data) => {\r\n                 setFeedbackData(data.feedback);\r\n-            }); ///api/some-feedback-id\r\n+            }); \r\n     }\r\n     return (\r\n         <Fragment>\r\n             {feedbackData && <p>{feedbackData.email}</p>}\r\n@@ -25,9 +25,9 @@\n         </Fragment>\r\n     )\r\n }\r\n \r\n-export async function getStaticProps() { //server-side code\r\n+export async function getStaticProps() {\r\n     const filePath = buildFeedbackPath();\r\n     const data = extractFeedback(filePath);\r\n     return {\r\n         props: {\r\n"
+                }
+            ],
+            "date": 1676537547391,
+            "name": "Commit-0",
+            "content": "function FeedbackPage(){\r\n    return(\r\n        <div>\r\n            Feedback Page!\r\n        </div>\r\n    )\r\n}\r\n\r\nexport default FeedbackPage;"
+        }
+    ]
+}

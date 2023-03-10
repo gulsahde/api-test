@@ -1,0 +1,34 @@
+{
+    "sourceFile": "pages/api/[feedbackId].js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 4,
+            "patches": [
+                {
+                    "date": 1677843093695,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1677843414574,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,4 @@\n-function handler(){\r\n-\r\n+function handler(req, res){\r\n+    const feedback = req.query.feedbackId;\r\n }\r\n export default handler;\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1678443877949,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,12 @@\n+import { buildFeedbackPath, extractFeedback } from \"./feedback\";\r\n+function handler(req, res) {\r\n+    const feedbackId = req.query.feedbackId;\r\n+\r\n+    const filePath = buildFeedbackPath();\r\n+    const feedbackData = extractFeedback(filePath);\r\n+    const selectedFeedback = feedbackData.find(\r\n+        (feedback) => feedback.id === feedbackId\r\n+    );\r\n+    res.status(200).json({feedback: selectedFeedback});\r\n+}\r\n+export default handler;\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1678445545059,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-import { buildFeedbackPath, extractFeedback } from \"./feedback\";\r\n+import { buildFeedbackPath, extractFeedback } from \"./feedback/feedback\";\r\n function handler(req, res) {\r\n     const feedbackId = req.query.feedbackId;\r\n \r\n     const filePath = buildFeedbackPath();\r\n@@ -8,9 +8,5 @@\n         (feedback) => feedback.id === feedbackId\r\n     );\r\n     res.status(200).json({feedback: selectedFeedback});\r\n }\r\n-export default handler;\n-function handler(req, res){\r\n-    const feedback = req.query.feedbackId;\r\n-}\r\n export default handler;\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1678445552982,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-import { buildFeedbackPath, extractFeedback } from \"./feedback/feedback\";\r\n+import { buildFeedbackPath, extractFeedback } from \"./feedback\";\r\n function handler(req, res) {\r\n     const feedbackId = req.query.feedbackId;\r\n \r\n     const filePath = buildFeedbackPath();\r\n"
+                }
+            ],
+            "date": 1677843093695,
+            "name": "Commit-0",
+            "content": "function handler(){\r\n\r\n}\r\nexport default handler;"
+        }
+    ]
+}

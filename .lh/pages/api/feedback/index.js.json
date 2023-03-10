@@ -1,0 +1,18 @@
+{
+    "sourceFile": "pages/api/feedback/index.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1678446478357,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1678446478357,
+            "name": "Commit-0",
+            "content": "// Next.js API route support: https://nextjs.org/docs/api-routes/introduction\n\nimport fs from 'fs';\nimport path from 'path';\n\n\nexport function buildFeedbackPath(){ \n  return path.join(process.cwd(), 'data', 'feedback.json'); \n}\nexport function extractFeedback(filePath){ \n  const fileData = fs.readFileSync(filePath);\n  const data = JSON.parse(fileData);\n  return data;\n}\n\nexport default function handler(req, res) {\n  if (req.method === 'POST') {\n    const email = req.body.email;\n    const feedbackText = req.body.text;\n\n    const newFeedback = {\n      id: new Date().toISOString(),\n      email: email,\n      text: feedbackText\n    }\n    const filePath = buildFeedbackPath();\n    const data = extractFeedback(filePath); \n    data.push(newFeedback);\n    fs.writeFileSync(filePath, JSON.stringify(data));\n    res.status(201).json({message:'Success!', feedback: newFeedback});\n  }\n\n  else {\n    const filePath = buildFeedbackPath();\n    const data = extractFeedback(filePath);\n    res.status(200).json({ feedback: data });\n  }\n\n}\n"
+        }
+    ]
+}

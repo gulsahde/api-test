@@ -1,0 +1,38 @@
+{
+    "sourceFile": "next.config.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 5,
+            "patches": [
+                {
+                    "date": 1676376950964,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1676376973243,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,15 +1,19 @@\n /** @type {import('next').NextConfig} */\n const nextConfig = {\n   reactStrictMode: true,\n \n-  webpack5: true,\n-  webpack: (config) => {\n-    config.resolve.fallback = { fs: false };\n+  webpack: (config, { isServer }) => {\n+    // Fixes npm packages that depend on `fs` module\n+    if (!isServer) {\n+      config.node = {\n+        fs: 'empty'\n+      }\n+    }\n \n-    return config;\n-  },\n-  \n+    return config\n+  }\n+\n }\n \n \n \n"
+                },
+                {
+                    "date": 1676377034472,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,18 +1,14 @@\n /** @type {import('next').NextConfig} */\n const nextConfig = {\n   reactStrictMode: true,\n \n-  webpack: (config, { isServer }) => {\n-    // Fixes npm packages that depend on `fs` module\n-    if (!isServer) {\n-      config.node = {\n-        fs: 'empty'\n-      }\n-    }\n+  webpack5: true,\n+  webpack: (config) => {\n+    config.resolve.fallback = { fs: false };\n \n-    return config\n-  }\n+    return config;\n+  },\n \n }\n \n \n"
+                },
+                {
+                    "date": 1676377065619,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,16 +1,6 @@\n /** @type {import('next').NextConfig} */\n const nextConfig = {\n   reactStrictMode: true,\n-\n-  webpack5: true,\n-  webpack: (config) => {\n-    config.resolve.fallback = { fs: false };\n-\n-    return config;\n-  },\n-\n }\n \n-\n-\n module.exports = nextConfig\n"
+                },
+                {
+                    "date": 1676377540522,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,20 @@\n /** @type {import('next').NextConfig} */\n const nextConfig = {\n   reactStrictMode: true,\n+\n+  //\n+  webpack(config, { nextRuntime }) { \n+    // as of Next.js latest versions, the nextRuntime is preferred over `isServer`, because of edge-runtime\n+    if (typeof nextRuntime === \"undefined\") {\n+      const { IgnorePlugin } = require(\"webpack\");\n+      const ignoreFs = new IgnorePlugin({ resourceRegExp: /fs/ });\n+      config.plugins.push(ignoreFs);\n+    }\n+\n+    return config;\n+  },\n+  //\n+  \n }\n \n module.exports = nextConfig\n"
+                },
+                {
+                    "date": 1676378289619,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,10 +1,10 @@\n /** @type {import('next').NextConfig} */\n const nextConfig = {\n   reactStrictMode: true,\n \n-  //\n-  webpack(config, { nextRuntime }) { \n+  //This part is added to avoid file system Node.js module error - 14.02.2023 - BEGINNING -- BY DEVELOPER GULSAH\n+  webpack(config, { nextRuntime }) {\n     // as of Next.js latest versions, the nextRuntime is preferred over `isServer`, because of edge-runtime\n     if (typeof nextRuntime === \"undefined\") {\n       const { IgnorePlugin } = require(\"webpack\");\n       const ignoreFs = new IgnorePlugin({ resourceRegExp: /fs/ });\n@@ -12,9 +12,9 @@\n     }\n \n     return config;\n   },\n-  //\n-  \n+  //This part is added to avoid file system Node.js module error - 14.02.2023 - END -- BY DEVELOPER GULSAH\n+\n }\n \n module.exports = nextConfig\n"
+                }
+            ],
+            "date": 1676376950964,
+            "name": "Commit-0",
+            "content": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n  reactStrictMode: true,\n\n  webpack5: true,\n  webpack: (config) => {\n    config.resolve.fallback = { fs: false };\n\n    return config;\n  },\n  \n}\n\n\n\nmodule.exports = nextConfig\n"
+        }
+    ]
+}

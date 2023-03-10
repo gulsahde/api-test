@@ -1,0 +1,126 @@
+{
+    "sourceFile": "pages/api/feedback.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 27,
+            "patches": [
+                {
+                    "date": 1676123021453,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1676292865227,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,15 @@\n-  // Next.js API route support: https://nextjs.org/docs/api-routes/introduction\n+// Next.js API route support: https://nextjs.org/docs/api-routes/introduction\n \n-  export default function handler(req, res) {\n-    res.status(200).json({ message: \"This works!\"})\n+export default function handler(req, res) {\n+  if (req.method === 'POST') {\n+    const email = req.body.email;\n+    const feedbackText = req.body.text;\n+\n+    const newFeedback={\n+      id: new Date(),\n+      email: email,\n+      text: feedbackText\n+    }\n   }\n+  res.status(200).json({ message: \"This works!\" })\n+}\n"
+                },
+                {
+                    "date": 1676292883044,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n     const email = req.body.email;\n     const feedbackText = req.body.text;\n \n     const newFeedback={\n-      id: new Date(),\n+      id: new Date().toISOString,\n       email: email,\n       text: feedbackText\n     }\n   }\n"
+                },
+                {
+                    "date": 1676293390545,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,13 +1,13 @@\n // Next.js API route support: https://nextjs.org/docs/api-routes/introduction\n-\n+import fs from 'fs';\n export default function handler(req, res) {\n   if (req.method === 'POST') {\n     const email = req.body.email;\n     const feedbackText = req.body.text;\n \n     const newFeedback={\n-      id: new Date().toISOString,\n+      id: new Date().toISOString(),\n       email: email,\n       text: feedbackText\n     }\n   }\n"
+                },
+                {
+                    "date": 1676294082190,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,8 @@\n // Next.js API route support: https://nextjs.org/docs/api-routes/introduction\n import fs from 'fs';\n+import path from 'path';\n+\n export default function handler(req, res) {\n   if (req.method === 'POST') {\n     const email = req.body.email;\n     const feedbackText = req.body.text;\n"
+                },
+                {
+                    "date": 1676294985012,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,12 +6,16 @@\n   if (req.method === 'POST') {\n     const email = req.body.email;\n     const feedbackText = req.body.text;\n \n-    const newFeedback={\n+    const newFeedback = {\n       id: new Date().toISOString(),\n       email: email,\n       text: feedbackText\n     }\n+\n+    const filePath = path.join(process.cwd(), 'data', 'feedback.json');\n+    const fileData = fs.readFileSync(filePath);\n+    const data = JSON.parse(fileData);\n   }\n   res.status(200).json({ message: \"This works!\" })\n }\n"
+                },
+                {
+                    "date": 1676295318287,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,7 +15,8 @@\n \n     const filePath = path.join(process.cwd(), 'data', 'feedback.json');\n     const fileData = fs.readFileSync(filePath);\n     const data = JSON.parse(fileData);\n+    data.push(newFeedback);\n   }\n   res.status(200).json({ message: \"This works!\" })\n }\n"
+                },
+                {
+                    "date": 1676296512853,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,7 +16,8 @@\n     const filePath = path.join(process.cwd(), 'data', 'feedback.json');\n     const fileData = fs.readFileSync(filePath);\n     const data = JSON.parse(fileData);\n     data.push(newFeedback);\n+    fs.writeFileSync(filePath, JSON.stringify(data))\n   }\n   res.status(200).json({ message: \"This works!\" })\n }\n"
+                },
+                {
+                    "date": 1676361290153,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,9 @@\n // Next.js API route support: https://nextjs.org/docs/api-routes/introduction\n import fs from 'fs';\n import path from 'path';\n \n+console.log(process.cwd());\n export default function handler(req, res) {\n   if (req.method === 'POST') {\n     const email = req.body.email;\n     const feedbackText = req.body.text;\n@@ -16,8 +17,8 @@\n     const filePath = path.join(process.cwd(), 'data', 'feedback.json');\n     const fileData = fs.readFileSync(filePath);\n     const data = JSON.parse(fileData);\n     data.push(newFeedback);\n-    fs.writeFileSync(filePath, JSON.stringify(data))\n+    fs.writeFileSync(filePath, JSON.stringify(data));\n   }\n   res.status(200).json({ message: \"This works!\" })\n }\n"
+                },
+                {
+                    "date": 1676361458657,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,8 @@\n // Next.js API route support: https://nextjs.org/docs/api-routes/introduction\n import fs from 'fs';\n import path from 'path';\n \n-console.log(process.cwd());\n export default function handler(req, res) {\n   if (req.method === 'POST') {\n     const email = req.body.email;\n     const feedbackText = req.body.text;\n@@ -20,5 +19,6 @@\n     data.push(newFeedback);\n     fs.writeFileSync(filePath, JSON.stringify(data));\n   }\n   res.status(200).json({ message: \"This works!\" })\n+  console.log(process.cwd());\n }\n"
+                },
+                {
+                    "date": 1676361481175,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,7 +18,6 @@\n     const data = JSON.parse(fileData);\n     data.push(newFeedback);\n     fs.writeFileSync(filePath, JSON.stringify(data));\n   }\n-  res.status(200).json({ message: \"This works!\" })\n-  console.log(process.cwd());\n+  res.status(200).json({ message: process.cwd() })\n }\n"
+                },
+                {
+                    "date": 1676361508644,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,12 +12,12 @@\n       email: email,\n       text: feedbackText\n     }\n \n-    const filePath = path.join(process.cwd(), 'data', 'feedback.json');\n+    const filePath = path.join(process.cwd(), 'data', 'feedback.json'); //\"C:\\\\Users\\\\Asus\\\\api-test\"\n     const fileData = fs.readFileSync(filePath);\n     const data = JSON.parse(fileData);\n     data.push(newFeedback);\n     fs.writeFileSync(filePath, JSON.stringify(data));\n   }\n-  res.status(200).json({ message: process.cwd() })\n+  res.status(200).json({ message: \"This works!\" })\n }\n"
+                },
+                {
+                    "date": 1676364869849,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,6 +18,12 @@\n     const data = JSON.parse(fileData);\n     data.push(newFeedback);\n     fs.writeFileSync(filePath, JSON.stringify(data));\n   }\n-  res.status(200).json({ message: \"This works!\" })\n+\n+  else {\n+    res.status(200).json({ message: \"This works!\" })\n+  }\n+\n }\n+\n+export default handler;\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1676364889487,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,9 @@\n // Next.js API route support: https://nextjs.org/docs/api-routes/introduction\n import fs from 'fs';\n import path from 'path';\n \n-export default function handler(req, res) {\n+function handler(req, res) {\n   if (req.method === 'POST') {\n     const email = req.body.email;\n     const feedbackText = req.body.text;\n \n"
+                },
+                {
+                    "date": 1676365016873,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,9 @@\n // Next.js API route support: https://nextjs.org/docs/api-routes/introduction\n import fs from 'fs';\n import path from 'path';\n \n-function handler(req, res) {\n+export default function handler(req, res) {\n   if (req.method === 'POST') {\n     const email = req.body.email;\n     const feedbackText = req.body.text;\n \n@@ -19,11 +19,9 @@\n     data.push(newFeedback);\n     fs.writeFileSync(filePath, JSON.stringify(data));\n   }\n \n-  else {\n-    res.status(200).json({ message: \"This works!\" })\n+  else{\n+    res.status(200).json({ message: \"This works!\" });\n   }\n-\n+  \n\\ No newline at end of file\n }\n-\n-export default handler;\n"
+                },
+                {
+                    "date": 1676365038290,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n     data.push(newFeedback);\n     fs.writeFileSync(filePath, JSON.stringify(data));\n   }\n \n-  else{\n+  else {\n     res.status(200).json({ message: \"This works!\" });\n   }\n-  \n\\ No newline at end of file\n-}\n+\n+}\n"
+                },
+                {
+                    "date": 1676373434958,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,8 @@\n // Next.js API route support: https://nextjs.org/docs/api-routes/introduction\n-import fs from 'fs';\n+// import fs from 'fs';\n+import { promises as fs } from 'fs';\n+\n import path from 'path';\n \n export default function handler(req, res) {\n   if (req.method === 'POST') {\n"
+                },
+                {
+                    "date": 1676376668587,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,7 @@\n // Next.js API route support: https://nextjs.org/docs/api-routes/introduction\n // import fs from 'fs';\n import { promises as fs } from 'fs';\n-\n import path from 'path';\n \n export default function handler(req, res) {\n   if (req.method === 'POST') {\n"
+                },
+                {
+                    "date": 1676376761668,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n // Next.js API route support: https://nextjs.org/docs/api-routes/introduction\n // import fs from 'fs';\n-import { promises as fs } from 'fs';\n+import fs from 'fs'\n import path from 'path';\n \n export default function handler(req, res) {\n   if (req.method === 'POST') {\n"
+                },
+                {
+                    "date": 1676376837157,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n // Next.js API route support: https://nextjs.org/docs/api-routes/introduction\n-// import fs from 'fs';\n-import fs from 'fs'\n+\n+import {fs} from 'fs'\n import path from 'path';\n \n export default function handler(req, res) {\n   if (req.method === 'POST') {\n"
+                },
+                {
+                    "date": 1676376845756,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n // Next.js API route support: https://nextjs.org/docs/api-routes/introduction\n \n-import {fs} from 'fs'\n+import fs from 'fs'\n import path from 'path';\n \n export default function handler(req, res) {\n   if (req.method === 'POST') {\n"
+                },
+                {
+                    "date": 1676377322013,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n // Next.js API route support: https://nextjs.org/docs/api-routes/introduction\n \n-import fs from 'fs'\n+import fs from 'fs';\n import path from 'path';\n \n export default function handler(req, res) {\n   if (req.method === 'POST') {\n@@ -12,8 +12,9 @@\n       id: new Date().toISOString(),\n       email: email,\n       text: feedbackText\n     }\n+    const fs = require('fs')\n \n     const filePath = path.join(process.cwd(), 'data', 'feedback.json'); //\"C:\\\\Users\\\\Asus\\\\api-test\"\n     const fileData = fs.readFileSync(filePath);\n     const data = JSON.parse(fileData);\n"
+                },
+                {
+                    "date": 1676377385865,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,10 +12,8 @@\n       id: new Date().toISOString(),\n       email: email,\n       text: feedbackText\n     }\n-    const fs = require('fs')\n-\n     const filePath = path.join(process.cwd(), 'data', 'feedback.json'); //\"C:\\\\Users\\\\Asus\\\\api-test\"\n     const fileData = fs.readFileSync(filePath);\n     const data = JSON.parse(fileData);\n     data.push(newFeedback);\n"
+                },
+                {
+                    "date": 1676449919496,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,8 @@\n // Next.js API route support: https://nextjs.org/docs/api-routes/introduction\n \n import fs from 'fs';\n+import { RESPONSE_LIMIT_DEFAULT } from 'next/dist/server/api-utils';\n import path from 'path';\n \n export default function handler(req, res) {\n   if (req.method === 'POST') {\n@@ -17,8 +18,9 @@\n     const fileData = fs.readFileSync(filePath);\n     const data = JSON.parse(fileData);\n     data.push(newFeedback);\n     fs.writeFileSync(filePath, JSON.stringify(data));\n+    res.status(201).json({message:'Success!', feedback: newFeedback});\n   }\n \n   else {\n     res.status(200).json({ message: \"This works!\" });\n"
+                },
+                {
+                    "date": 1676451895544,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,10 +1,19 @@\n // Next.js API route support: https://nextjs.org/docs/api-routes/introduction\n \n import fs from 'fs';\n-import { RESPONSE_LIMIT_DEFAULT } from 'next/dist/server/api-utils';\n import path from 'path';\n \n+\n+function buildFeedbackPath(){ //access to the data storage file\n+  return path.join(process.cwd(), 'data', 'feedback.json'); //\"C:\\\\Users\\\\Asus\\\\api-test\"\n+}\n+function extractFeedback(filePath){ //reading and convert the JSON to Javascript data type\n+  const fileData = fs.readFileSync(filePath);\n+  const data = JSON.parse(fileData);\n+  return data;\n+}\n+\n export default function handler(req, res) {\n   if (req.method === 'POST') {\n     const email = req.body.email;\n     const feedbackText = req.body.text;\n@@ -13,17 +22,18 @@\n       id: new Date().toISOString(),\n       email: email,\n       text: feedbackText\n     }\n-    const filePath = path.join(process.cwd(), 'data', 'feedback.json'); //\"C:\\\\Users\\\\Asus\\\\api-test\"\n-    const fileData = fs.readFileSync(filePath);\n-    const data = JSON.parse(fileData);\n+    const filePath = buildFeedbackPath();\n+    const data = extractFeedback(filePath); //extracted and parsed feedback in that data constant\n     data.push(newFeedback);\n     fs.writeFileSync(filePath, JSON.stringify(data));\n     res.status(201).json({message:'Success!', feedback: newFeedback});\n   }\n \n   else {\n-    res.status(200).json({ message: \"This works!\" });\n+    const filePath = buildFeedbackPath();\n+    const data = extractFeedback(filePath);\n+    res.status(200).json({ feedback: data });\n   }\n \n }\n"
+                },
+                {
+                    "date": 1676453345938,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,9 +26,9 @@\n     const filePath = buildFeedbackPath();\n     const data = extractFeedback(filePath); //extracted and parsed feedback in that data constant\n     data.push(newFeedback);\n     fs.writeFileSync(filePath, JSON.stringify(data));\n-    res.status(201).json({message:'Success!', feedback: newFeedback});\n+    res.status(201).json({message:'Success!', feedbackkk: newFeedback});\n   }\n \n   else {\n     const filePath = buildFeedbackPath();\n"
+                },
+                {
+                    "date": 1676453384902,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,9 +26,9 @@\n     const filePath = buildFeedbackPath();\n     const data = extractFeedback(filePath); //extracted and parsed feedback in that data constant\n     data.push(newFeedback);\n     fs.writeFileSync(filePath, JSON.stringify(data));\n-    res.status(201).json({message:'Success!', feedbackkk: newFeedback});\n+    res.status(201).json({message:'Success!', feedback: newFeedback});\n   }\n \n   else {\n     const filePath = buildFeedbackPath();\n"
+                },
+                {
+                    "date": 1677838974782,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,12 +3,12 @@\n import fs from 'fs';\n import path from 'path';\n \n \n-function buildFeedbackPath(){ //access to the data storage file\n+export function buildFeedbackPath(){ //access to the data storage file\n   return path.join(process.cwd(), 'data', 'feedback.json'); //\"C:\\\\Users\\\\Asus\\\\api-test\"\n }\n-function extractFeedback(filePath){ //reading and convert the JSON to Javascript data type\n+export function extractFeedback(filePath){ //reading and convert the JSON to Javascript data type\n   const fileData = fs.readFileSync(filePath);\n   const data = JSON.parse(fileData);\n   return data;\n }\n"
+                }
+            ],
+            "date": 1676123021453,
+            "name": "Commit-0",
+            "content": "  // Next.js API route support: https://nextjs.org/docs/api-routes/introduction\n\n  export default function handler(req, res) {\n    res.status(200).json({ message: \"This works!\"})\n  }\n"
+        }
+    ]
+}
